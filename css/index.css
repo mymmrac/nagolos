@@ -10,6 +10,10 @@
     width: 30%;
 }
 
+.word{
+    font-size: 4rem;
+}
+
 @media only screen and (max-width: 1600px) {
     .panel {
         width: 50%;
@@ -20,10 +24,17 @@
     .panel {
         width: 70%;
     }
+
+    .word{
+        font-size: 3rem;
+    }
 }
 
 @media only screen and (max-width: 750px) {
     .panel {
         width: 90%;
+    }
+    .word{
+        font-size: 2rem;
     }
 }
