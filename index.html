@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nagolos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        .wrapper {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%;
+            height: 20%;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="wrapper">
+    <form id="quiz" class="form-group card">
+        <div class="card-body pb-0">
+            <p class="text-center">Наголос слова</p>
+            <p class="text-center text-monospace" style="font-size: 4rem;" id="word">...</p>
+            <input id="ans" type="number" min="1" max="20" class="form-control mb-2" placeholder="Номер складу">
+            <button id="ans-btn" class="btn btn-success btn-block" type="submit">
+                <span id="ans-text">Відповісти</span>
+                <span id="ans-wait" style="display: none;" class="spinner-grow spinner-grow-sm" role="status"
+                      aria-hidden="true"></span>
+            </button>
+            <hr>
+            <p>Слово: <span id="word-number">...</span></p>
+            <p>Правильно: <span id="correct-count">...</span> (<span id="correct-percent">...</span>%)</p>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let words;
+        let ind = 0;
+        let corr = 0;
+
+        let ansField = $("#ans");
+
+        let ansBtn = $("#ans-btn");
+        let ansText = $("#ans-text");
+        let ansWait = $("#ans-wait");
+        let wordText = $("#word");
+
+        let wordCount = $("#word-number");
+        let wordCorr = $("#correct-count");
+        let wordPers = $("#correct-percent");
+
+        let ng = ['а', 'о', 'і', 'у', 'е', 'и', 'я', 'є', 'ї', 'ю'];
+
+        $.get('words.csv', function (data) {
+            let w = csvArray(data);
+            words = shuffle(w.concat(w).concat(w));
+            wordText.html(words[0].word);
+            wordCount.text("1");
+            wordCorr.text("0");
+            wordPers.text("0");
+        }, "text");
+
+
+        $("#quiz").submit(function (e) {
+            e.preventDefault();
+
+            let ans = parseInt(ansField.val())
+            ansField.val("");
+
+            ansBtn.prop('disabled', true);
+            ansText.hide();
+            ansWait.show();
+
+            setTimeout(function () {
+                ansBtn.prop('disabled', false);
+                ansWait.hide();
+                ansText.show();
+
+                ind++;
+                wordText.html(words[ind].word);
+            }, 2000);
+
+            let l = 0;
+            for (let i = 0; i < words[ind].word.length; i++) {
+                let c = words[ind].word.charAt(i);
+                if (ng.includes(c)){
+                    l++;
+                }
+                if (l === words[ind].num){
+                    let w1 = words[ind].word.substring(0, i);
+                    let w2 = words[ind].word.substring(i+1);
+                    let color = "red";
+                    if (words[ind].num === ans){
+                        corr++;
+                        color = "lime";
+                    }
+                    let w = w1 + "<span style=\"color: "+ color + "\">" + c + "</span>" + w2;
+                    wordText.html(w);
+                    break;
+                }
+            }
+
+            wordCount.text(ind + 1);
+            wordCorr.text(corr);
+            wordPers.text(((corr / (ind + 1).toFixed(1)) * 100).toFixed(2));
+
+        })
+    })
+
+    function csvArray(csv) {
+        let lines = csv.split("\n");
+        let result = [];
+
+        for (let i = 0; i < lines.length; i++) {
+            let obj = {};
+            let currentLine = lines[i].split(",");
+            if (currentLine.length === 2) {
+                obj["word"] = currentLine[0]
+                obj["num"] = parseInt(currentLine[1]);
+                result.push(obj);
+            }
+        }
+        return result;
+    }
+
+    function shuffle(array) {
+        let currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+</script>
+
+</body>
+</html>
