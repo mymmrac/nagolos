@@ -8,37 +8,30 @@
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
     <link rel="manifest" href="img/site.webmanifest">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <style>
-        .wrapper {
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30%;
-            height: 20%;
-        }
-    </style>
 </head>
 <body class="bg-light">
 <div class="wrapper">
-    <form id="quiz" class="form-group card">
-        <div class="card-body pb-0">
-            <p class="text-center">Наголос слова</p>
-            <p class="text-center text-monospace" style="font-size: 4rem;" id="word">...</p>
-            <input id="ans" type="number" min="1" max="20" class="form-control mb-2" placeholder="Номер складу">
-            <button id="ans-btn" class="btn btn-success btn-block" type="submit">
-                <span id="ans-text">Відповісти</span>
-                <span id="ans-wait" style="display: none;" class="spinner-grow spinner-grow-sm" role="status"
-                      aria-hidden="true"></span>
-            </button>
-            <hr>
-            <p>Слово: <span id="word-number">...</span></p>
-            <p>Правильно: <span id="correct-count">...</span> (<span id="correct-percent">...</span>%)</p>
-        </div>
-    </form>
+    <div class="panel">
+        <form id="quiz" class="form-group card">
+            <div class="card-body pb-0">
+                <p class="text-center">Наголос слова</p>
+                <p class="text-center text-monospace" style="font-size: 4rem;" id="word">...</p>
+                <input id="ans" type="number" min="1" max="20" class="form-control mb-2" placeholder="Номер складу">
+                <button id="ans-btn" class="btn btn-success btn-block" type="submit">
+                    <span id="ans-text">Відповісти</span>
+                    <span id="ans-wait" style="display: none;" class="spinner-grow spinner-grow-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+                <hr>
+                <p>Слово: <span id="word-number">...</span></p>
+                <p>Правильно: <span id="correct-count">...</span> (<span id="correct-percent">...</span>%)</p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
