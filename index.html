@@ -55,7 +55,8 @@
 
         $.get('words.csv', function (data) {
             let w = csvArray(data);
-            words = shuffle(w.concat(w).concat(w));
+            console.log("Words count:", w.length);
+            words = shuffle(shuffle(shuffle(w).concat(w)).concat(w));
             wordText.html(words[0].word);
             wordCount.text("1");
             wordCorr.text("0");
