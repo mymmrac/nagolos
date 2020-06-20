@@ -24,17 +24,13 @@
     .panel {
         width: 70%;
     }
-
     .word{
-        font-size: 3rem;
+        font-size: 3.2rem;
     }
 }
 
 @media only screen and (max-width: 750px) {
     .panel {
         width: 90%;
-    }
-    .word{
-        font-size: 2rem;
     }
 }
