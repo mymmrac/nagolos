@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Nagolos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/site.webmanifest">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -88,18 +92,18 @@
             let l = 0;
             for (let i = 0; i < words[ind].word.length; i++) {
                 let c = words[ind].word.charAt(i);
-                if (ng.includes(c)){
+                if (ng.includes(c)) {
                     l++;
                 }
-                if (l === words[ind].num){
+                if (l === words[ind].num) {
                     let w1 = words[ind].word.substring(0, i);
-                    let w2 = words[ind].word.substring(i+1);
+                    let w2 = words[ind].word.substring(i + 1);
                     let color = "red";
-                    if (words[ind].num === ans){
+                    if (words[ind].num === ans) {
                         corr++;
                         color = "lime";
                     }
-                    let w = w1 + "<span style=\"color: "+ color + "\">" + c + "</span>" + w2;
+                    let w = w1 + "<span style=\"color: " + color + "\">" + c + "</span>" + w2;
                     wordText.html(w);
                     break;
                 }
