@@ -92,7 +92,7 @@
             let l = 0;
             for (let i = 0; i < words[ind].word.length; i++) {
                 let c = words[ind].word.charAt(i);
-                if (ng.includes(c)) {
+                if (ng.includes(c.toLowerCase())) {
                     l++;
                 }
                 if (l === words[ind].num) {
