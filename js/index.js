@@ -52,11 +52,12 @@ $(document).ready(function () {
                     alert("Ви пройшли всі слова.\nПравильно: " + corr + " / " + wordsOrigin.length + " (" + corrPers + "%)");
                     resetInfo();
                 }
-            }else {
-                if (ind >= words.length){
+            } else {
+                if (ind >= words.length) {
                     words = shuffle(words);
                 }
             }
+            wordCount.text(ind + 1);
             wordText.html(words[ind % words.length].word);
         }, time);
 
@@ -80,7 +81,6 @@ $(document).ready(function () {
             }
         }
 
-        wordCount.text(ind + 2);
         wordCorr.text(corr);
         corrPers = ((corr / (ind + 1).toFixed(1)) * 100).toFixed(2);
         wordPers.text(corrPers);
@@ -129,7 +129,7 @@ $(document).ready(function () {
     })
 
     function setMode(force = false) {
-        if (quizMode !== quizModeCheck.prop("checked") || force){
+        if (quizMode !== quizModeCheck.prop("checked") || force) {
             if (quizModeCheck.prop("checked")) {
                 quizMode = true;
                 words = shuffle(wordsOrigin);
