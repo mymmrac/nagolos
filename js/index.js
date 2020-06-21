@@ -80,7 +80,7 @@ $(document).ready(function () {
             }
         }
 
-        wordCount.text(ind + 1);
+        wordCount.text(ind + 2);
         wordCorr.text(corr);
         corrPers = ((corr / (ind + 1).toFixed(1)) * 100).toFixed(2);
         wordPers.text(corrPers);
