@@ -94,7 +94,7 @@ $(document).ready(function () {
         wordText.html(words[0].word);
         wordCount.text(1);
         wordCorr.text(0);
-        wordPers.text(0);
+        wordPers.text("0.00");
     }
 
     let qm = getCookie("quiz-mode");
