@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170072379-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-170072379-1');
+    </script>
 </head>
 <body class="bg-light">
 <div class="wrapper">
@@ -58,7 +72,8 @@
 
                     <div class="form-group mb-0">
                         <label for="time">Час між словами:
-                            <output id="time-output">4</output>с
+                            <output id="time-output">4</output>
+                            с
                         </label>
                         <input type="range" class="form-control-range" id="time" min="0.5" max="6" value="2"
                                step="0.1" oninput="updateTime();">
