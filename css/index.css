@@ -10,8 +10,17 @@
     width: 30%;
 }
 
-.word{
+.word {
     font-size: 4rem;
+}
+
+.settings-btn {
+    font-size: 1.3rem !important;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    float: right;
+    margin: -48px 0 0 0 !important;
 }
 
 @media only screen and (max-width: 1600px) {
@@ -24,6 +33,7 @@
     .panel {
         width: 70%;
     }
+
     .word{
         font-size: 3.2rem;
     }

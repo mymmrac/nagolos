@@ -29,117 +29,51 @@
                 <hr>
                 <p>Слово: <span id="word-number">...</span></p>
                 <p>Правильно: <span id="correct-count">...</span> (<span id="correct-percent">...</span>%)</p>
+                <button type="button" data-toggle="modal" data-target="#settings-modal"
+                        class="settings-btn btn btn-primary"><span>&#9881;</span></button>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        let words;
-        let ind = 0;
-        let corr = 0;
+<div class="modal fade" tabindex="-1" role="dialog" id="settings-modal">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Параметри</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="font-size">Розмір тексту:
+                            <output id="font-output">4</output>
+                        </label>
+                        <input type="range" class="form-control-range" id="font-size" min="1" max="8" value="4"
+                               step="0.1" oninput="updateFont();">
+                        <small class="form-text text-muted">Початковий розмір: 4</small>
+                    </div>
 
-        let ansField = $("#ans");
+                    <div class="form-group mb-0">
+                        <label for="time">Час між словами:
+                            <output id="time-output">4</output>с
+                        </label>
+                        <input type="range" class="form-control-range" id="time" min="0.5" max="6" value="2"
+                               step="0.1" oninput="updateTime();">
+                        <small class="form-text text-muted">Початковий час: 2с</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button type="button" class="btn btn-primary" id="save-settings">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        let ansBtn = $("#ans-btn");
-        let ansText = $("#ans-text");
-        let ansWait = $("#ans-wait");
-        let wordText = $("#word");
-
-        let wordCount = $("#word-number");
-        let wordCorr = $("#correct-count");
-        let wordPers = $("#correct-percent");
-
-        let ng = ['а', 'о', 'і', 'у', 'е', 'и', 'я', 'є', 'ї', 'ю'];
-
-        $.get('words.csv', function (data) {
-            let w = csvArray(data);
-            console.log("Words count:", w.length);
-            words = shuffle(shuffle(shuffle(w).concat(w)).concat(w));
-            wordText.html(words[0].word);
-            wordCount.text("1");
-            wordCorr.text("0");
-            wordPers.text("0");
-        }, "text");
-
-
-        $("#quiz").submit(function (e) {
-            e.preventDefault();
-
-            let ans = parseInt(ansField.val())
-            ansField.val("");
-
-            ansBtn.prop('disabled', true);
-            ansText.hide();
-            ansWait.show();
-
-            setTimeout(function () {
-                ansBtn.prop('disabled', false);
-                ansWait.hide();
-                ansText.show();
-
-                ind++;
-                wordText.html(words[ind].word);
-            }, 2000);
-
-            let l = 0;
-            for (let i = 0; i < words[ind].word.length; i++) {
-                let c = words[ind].word.charAt(i);
-                if (ng.includes(c.toLowerCase())) {
-                    l++;
-                }
-                if (l === words[ind].num) {
-                    let w1 = words[ind].word.substring(0, i);
-                    let w2 = words[ind].word.substring(i + 1);
-                    let color = "red";
-                    if (words[ind].num === ans) {
-                        corr++;
-                        color = "lime";
-                    }
-                    let w = w1 + "<span style=\"color: " + color + "\">" + c + "</span>" + w2;
-                    wordText.html(w);
-                    break;
-                }
-            }
-
-            wordCount.text(ind + 1);
-            wordCorr.text(corr);
-            wordPers.text(((corr / (ind + 1).toFixed(1)) * 100).toFixed(2));
-
-        })
-    })
-
-    function csvArray(csv) {
-        let lines = csv.split("\n");
-        let result = [];
-
-        for (let i = 0; i < lines.length; i++) {
-            let obj = {};
-            let currentLine = lines[i].split(",");
-            if (currentLine.length === 2) {
-                obj["word"] = currentLine[0]
-                obj["num"] = parseInt(currentLine[1]);
-                result.push(obj);
-            }
-        }
-        return result;
-    }
-
-    function shuffle(array) {
-        let currentIndex = array.length, temporaryValue, randomIndex;
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        return array;
-    }
-
-</script>
-
+<script src="js/index.js"></script>
 </body>
 </html>
