@@ -1,9 +1,11 @@
-let time;
-
 $(document).ready(function () {
+    let wordsOrigin;
     let words;
     let ind = 0;
     let corr = 0;
+    let corrPers = 0;
+    let quizMode = false;
+    let time;
 
     let ansField = $("#ans");
 
@@ -15,19 +17,19 @@ $(document).ready(function () {
     let wordCount = $("#word-number");
     let wordCorr = $("#correct-count");
     let wordPers = $("#correct-percent");
+    let wordTotalCount = $("#word-total-count");
+
+    let quizModeCheck = $("#quiz-mode");
+
+    wordTotalCount.hide();
 
     let ng = ['а', 'о', 'і', 'у', 'е', 'и', 'я', 'є', 'ї', 'ю'];
 
     $.get('words.csv', function (data) {
-        let w = csvArray(data);
-        console.log("Words count:", w.length);
-        words = shuffle(shuffle(shuffle(w).concat(w)).concat(w));
-        wordText.html(words[0].word);
-        wordCount.text("1");
-        wordCorr.text("0");
-        wordPers.text("0");
+        wordsOrigin = csvArray(data);
+        console.log("Words count:", wordsOrigin.length);
+        setMode(true);
     }, "text");
-
 
     $("#quiz").submit(function (e) {
         e.preventDefault();
@@ -45,6 +47,12 @@ $(document).ready(function () {
             ansText.show();
 
             ind++;
+            if (quizMode) {
+                if (ind >= wordsOrigin.length) {
+                    alert("Ви пройшли всі слова.\nПравильно: " + corr + " / " + wordsOrigin.length + " (" + corrPers + "%)");
+                    resetInfo();
+                }
+            }
             wordText.html(words[ind].word);
         }, time);
 
@@ -70,12 +78,69 @@ $(document).ready(function () {
 
         wordCount.text(ind + 1);
         wordCorr.text(corr);
-        wordPers.text(((corr / (ind + 1).toFixed(1)) * 100).toFixed(2));
-
+        corrPers = ((corr / (ind + 1).toFixed(1)) * 100).toFixed(2);
+        wordPers.text(corrPers);
     })
+
+    function resetInfo() {
+        ind = 0;
+        corr = 0;
+        corrPers = 0;
+        words = shuffle(words);
+        wordText.html(words[0].word);
+        wordCount.text(1);
+        wordCorr.text(0);
+        wordPers.text(0);
+    }
+
+    let qm = getCookie("quiz-mode");
+    if (qm === "") {
+        setCookie("quiz-mode", "0")
+        qm = "0";
+    }
+    qm = parseInt(qm);
+    if (qm === 0) {
+        quizModeCheck.prop("checked", false);
+        quizMode = false;
+    } else if (qm === 1) {
+        quizModeCheck.prop("checked", true);
+        quizMode = true;
+    }
 
     changeFontSize();
     changeTime();
+
+    $("#save-settings").click(function () {
+        $("#settings-modal").modal('hide');
+
+        let fontSize = $("#font-size").val();
+        setCookie("font-size", fontSize);
+        changeFontSize();
+
+        let timeSettings = $("#time").val();
+        setCookie("time", timeSettings);
+        changeTime();
+
+        setMode();
+    })
+
+    function setMode(force = false) {
+        if (quizMode !== quizModeCheck.prop("checked") || force){
+            if (quizModeCheck.prop("checked")) {
+                quizMode = true;
+                words = shuffle(wordsOrigin);
+                wordTotalCount.text("/ " + wordsOrigin.length);
+                wordTotalCount.show();
+                setCookie("quiz-mode", "1");
+            } else {
+                quizMode = false;
+                words = shuffle(shuffle(shuffle(wordsOrigin).concat(wordsOrigin)).concat(wordsOrigin));
+                wordTotalCount.hide();
+                setCookie("quiz-mode", "0");
+            }
+            resetInfo()
+        }
+    }
 
     function changeFontSize() {
         let fontSize = getCookie("font-size");
@@ -101,18 +166,6 @@ $(document).ready(function () {
         $("#time-output").val(timeSettings);
         time = timeSettings * 1000;
     }
-
-    $("#save-settings").click(function () {
-        $("#settings-modal").modal('hide');
-
-        let fontSize = $("#font-size").val();
-        setCookie("font-size", fontSize);
-        changeFontSize();
-
-        let timeSettings = $("#time").val();
-        setCookie("time", timeSettings);
-        changeTime();
-    })
 })
 
 function updateFont() {
@@ -129,7 +182,7 @@ function csvArray(csv) {
 
     for (let i = 0; i < lines.length; i++) {
         let obj = {};
-        let currentLine = lines[i].split(",");
+        let currentLine = lines[i].split("|");
         if (currentLine.length === 2) {
             obj["word"] = currentLine[0]
             obj["num"] = parseInt(currentLine[1]);

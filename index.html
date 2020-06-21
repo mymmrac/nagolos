@@ -8,6 +8,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
     <link rel="manifest" href="img/site.webmanifest">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
@@ -41,9 +44,9 @@
                           aria-hidden="true"></span>
                 </button>
                 <hr>
-                <p>Слово: <span id="word-number">...</span></p>
+                <p>Слово: <span id="word-number">...</span> <span id="word-total-count">...</span></p>
                 <p>Правильно: <span id="correct-count">...</span> (<span id="correct-percent">...</span>%)</p>
-                <button type="button" data-toggle="modal" data-target="#settings-modal"
+                <button title="Параметри" type="button" data-toggle="modal" data-target="#settings-modal"
                         class="settings-btn btn btn-primary"><span>&#9881;</span></button>
             </div>
         </form>
@@ -61,6 +64,12 @@
             </div>
             <div class="modal-body">
                 <form>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="quiz-mode">
+                        <label class="custom-control-label" for="quiz-mode">Режим вікторини</label>
+                        <small class="form-text text-muted">Слова не повторюються</small>
+                    </div>
+                    <hr>
                     <div class="form-group">
                         <label for="font-size">Розмір тексту:
                             <output id="font-output">4</output>
@@ -69,7 +78,7 @@
                                step="0.1" oninput="updateFont();">
                         <small class="form-text text-muted">Початковий розмір: 4</small>
                     </div>
-
+                    <hr>
                     <div class="form-group mb-0">
                         <label for="time">Час між словами:
                             <output id="time-output">4</output>
