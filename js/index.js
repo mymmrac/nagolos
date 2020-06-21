@@ -52,21 +52,25 @@ $(document).ready(function () {
                     alert("Ви пройшли всі слова.\nПравильно: " + corr + " / " + wordsOrigin.length + " (" + corrPers + "%)");
                     resetInfo();
                 }
+            }else {
+                if (ind >= words.length){
+                    words = shuffle(words);
+                }
             }
-            wordText.html(words[ind].word);
+            wordText.html(words[ind % words.length].word);
         }, time);
 
         let l = 0;
-        for (let i = 0; i < words[ind].word.length; i++) {
-            let c = words[ind].word.charAt(i);
+        for (let i = 0; i < words[ind % words.length].word.length; i++) {
+            let c = words[ind % words.length].word.charAt(i);
             if (ng.includes(c.toLowerCase())) {
                 l++;
             }
             if (l === words[ind].num) {
-                let w1 = words[ind].word.substring(0, i);
-                let w2 = words[ind].word.substring(i + 1);
+                let w1 = words[ind % words.length].word.substring(0, i);
+                let w2 = words[ind % words.length].word.substring(i + 1);
                 let color = "red";
-                if (words[ind].num === ans) {
+                if (words[ind % words.length].num === ans) {
                     corr++;
                     color = "lime";
                 }
